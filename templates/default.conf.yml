@@ -9,7 +9,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  {{- if not (eq .Values.praeco.nginx.config.inline "") }}
+  {{- if eq .Values.praeco.nginx.config.inline "" }}
   nginx_config_default: |-
     # cache github api
     proxy_cache_path /tmp/nginx_cache levels=1:2 keys_zone=github_api_cache:60m max_size=10g 
@@ -42,7 +42,6 @@ data:
       }
     }
   {{- else }}
-  nginx_config_default: |-
-  {{ .Values.praeco.nginx.config.inline | indent 4 }}
+  nginx_config_default: |- {{ .Values.praeco.nginx.config.inline | nindent 4 }}
   {{- end }}
 {{- end }}
