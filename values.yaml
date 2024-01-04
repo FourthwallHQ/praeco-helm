@@ -71,3 +71,9 @@ praeco:
   schema: http
   external_host: praeco
   port: 8080
+  nginx:
+    config:
+      existingMap:
+        name:
+        key:
+      inline:

@@ -74,9 +74,17 @@ spec:
               path: nginx.conf
         - name: default-conf
           configMap:
+            {{- if not .Values.praeco.nginx.config.existingMap.name }}
             name: {{ template "praeco.fullname" . }}-nginx-default-config
+            {{- else }}
+            name: {{ .Values.praeco.nginx.config.existingMap.name }}
+            {{- end}}
             items:
+            {{- if not .Values.praeco.nginx.config.existingMap.key }}
             - key: nginx_config_default
+            {{- else }}
+            - key: {{ .Values.praeco.nginx.config.existingMap.key }}
+            {{- end}}
               path: default.conf
         - name: praeco-config
           configMap:

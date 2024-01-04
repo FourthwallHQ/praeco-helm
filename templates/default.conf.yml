@@ -1,3 +1,4 @@
+{{- if not .Values.praeco.nginx.config.existingMap.name }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,6 +9,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
+  {{- if not (eq .Values.praeco.nginx.config.inline "") }}
   nginx_config_default: |-
     # cache github api
     proxy_cache_path /tmp/nginx_cache levels=1:2 keys_zone=github_api_cache:60m max_size=10g 
@@ -39,3 +41,8 @@ data:
           try_files $uri $uri/ /index.html;
       }
     }
+  {{- else }}
+  nginx_config_default: |-
+  {{ .Values.praeco.nginx.config.inline | indent 4 }}
+  {{- end }}
+{{- end }}
